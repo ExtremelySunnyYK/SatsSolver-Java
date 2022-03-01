@@ -1,10 +1,9 @@
 package sat;
 
-/*
-import static org.junit.Assert.*;
 
+import static org.junit.Assert.*;
 import org.junit.Test;
-*/
+
 
 import sat.env.*;
 import sat.formula.*;
@@ -53,7 +52,7 @@ public class SATSolverTest {
     	// (a v b)
     	Environment e = SATSolver.solve(makeFm(makeCl(a,b))	);
         System.out.println(e);
-    	assert (
+        assertTrue ("checking if a or b is true",
     			Bool.TRUE == e.get(a.getVariable())  
     			|| Bool.TRUE == e.get(b.getVariable())	);
     	
@@ -63,7 +62,7 @@ public class SATSolverTest {
     public void testSATSolver2(){
     	// (~a)
     	Environment e = SATSolver.solve(makeFm(makeCl(na)));
-    	// assertEquals( Bool.FALSE, e.get(na.getVariable()));
+    	 assertEquals( Bool.FALSE, e.get(na.getVariable()));
  	
     }
     

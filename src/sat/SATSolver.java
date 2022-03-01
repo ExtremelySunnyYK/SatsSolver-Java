@@ -45,6 +45,10 @@ public class SATSolver {
      *         or null if no such environment exists.
      */
     private static Environment solve(ImList<Clause> clauses, Environment env) {
+
+        if (clauses.isEmpty()){
+            return env;
+        }
         Clause smallest_clause = clauses.first();
 
         for (Clause clause : clauses){
@@ -59,11 +63,11 @@ public class SATSolver {
         if (smallest_clause.isUnit()){
             Literal unit_var = smallest_clause.chooseLiteral();
             // if its 1 literal only : bind it to env and its true
-            env.putTrue(unit_var.getVariable());
+            env = env.putTrue(unit_var.getVariable());
             // call substitute on this literal and get new simplified cnf
             ImList<Clause> simplified_cnf = substitute(clauses, unit_var);
             // recursively call solve
-            solve(simplified_cnf, env);
+            return solve(simplified_cnf, env);
             
         } else {
             // randomly take one literal from the smallest clause and set to true 
@@ -74,7 +78,7 @@ public class SATSolver {
             Environment positive_env = solve(positive_cnf, env);
 
             if (positive_env != null) {
-                positive_env.putTrue(random_var.getVariable());
+                positive_env = positive_env.putTrue(random_var.getVariable());
                 return positive_env;
             } 
             // negative literal
@@ -84,7 +88,7 @@ public class SATSolver {
             Environment negative_env = solve(negative_cnf, env);
 
             if (negative_env != null) {
-                negative_env.putFalse(random_var.getVariable());
+                negative_env = negative_env.putFalse(random_var.getVariable());
                 return negative_env;
             }
 
@@ -106,15 +110,18 @@ public class SATSolver {
     private static ImList<Clause> substitute(ImList<Clause> clauses,
             Literal l) {
         // throw new RuntimeException("not yet implemented.");
-        // ImList<Clause> new_clauses = new Formula().getClauses();
+         ImList<Clause> new_clauses = new Formula().getClauses();
 
         for (Clause clause : clauses){
             // remove l from clause
             if (clause.contains(l)){
-                // new_clauses.add(clause.reduce(l));
-                clause = clause.reduce(l);
+                Clause reducedClause = clause.reduce(l);
+                if (reducedClause != null){
+                 new_clauses.add(clause.reduce(l));
+                }
+//                clause = clause.reduce(l);
             }
         }
-        return clauses;
+        return new_clauses;
     }
 }
