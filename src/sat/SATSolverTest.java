@@ -62,7 +62,9 @@ public class SATSolverTest {
     public void testSATSolver2(){
     	// (~a)
     	Environment e = SATSolver.solve(makeFm(makeCl(na)));
-    	 assertEquals( Bool.FALSE, e.get(na.getVariable()));
+        System.out.println(e);
+
+        assertEquals("checking if ", Bool.FALSE, e.get(na.getVariable()));
  	
     }
     
