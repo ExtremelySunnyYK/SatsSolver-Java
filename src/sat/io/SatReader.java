@@ -37,7 +37,7 @@ public class SatReader {
                     }
                     Literal[] literalArray = checkList(contentLine);
                     Clause clauses = makeCl(literalArray);
-                    output = makeFm(output, clauses);
+                    output = makeFm(clauses);
                 }
             }
 

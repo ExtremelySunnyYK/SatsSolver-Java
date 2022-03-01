@@ -8,6 +8,8 @@ import org.junit.Test;
 
 import sat.env.*;
 import sat.formula.*;
+import sat.io.SatReader;
+import sat.io.SatWriter;
 
 
 public class SATSolverTest {
@@ -17,6 +19,29 @@ public class SATSolverTest {
     Literal na = a.getNegation();
     Literal nb = b.getNegation();
     Literal nc = c.getNegation();
+
+    public static void main(String[] args) {
+        Formula f2 = SatReader.formulaReader();
+        System.out.println("SAT solver starts!");
+        long started = System.nanoTime();
+
+        // Solve for satisfiability
+        Environment e = SATSolver.solve(f2);
+        if (e == null) {
+            System.out.println("unsatisfiable");
+        } else {
+            System.out.println("satisfiable");
+        }
+
+        // Stop timer
+        long time = System.nanoTime();
+        long timeTaken = time - started;
+        System.out.println("Time:" + timeTaken / 1000000.0 + "ms");
+
+        // Write env to BoolAssignment.txt
+        if (e!=null) { SatWriter.writer(e); }
+    }
+
 
 	
     public void testSATSolver1(){
