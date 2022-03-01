@@ -45,30 +45,26 @@ public class SATSolver {
      *         or null if no such environment exists.
      */
     private static Environment solve(ImList<Clause> clauses, Environment env) {
-        if (clauses.size() == 0){
-            return env;
-        }
-
         Clause smallest_clause = clauses.first();
 
-        for (Clause clause : clauses) {
+        for (Clause clause : clauses){
             if (clause.isEmpty()) {
                 return null;
-            } else if (clause.size() < smallest_clause.size()) {
-                smallest_clause = clause;
             }
+            else if (clause.size() < smallest_clause.size()){
+                    smallest_clause = clause;
+                }
         }
-
-        if (smallest_clause.isUnit()) {
+        
+        if (smallest_clause.isUnit()){
             Literal unit_var = smallest_clause.chooseLiteral();
             // if its 1 literal only : bind it to env and its true
             env.putTrue(unit_var.getVariable());
-//            System.out.println();
             // call substitute on this literal and get new simplified cnf
             ImList<Clause> simplified_cnf = substitute(clauses, unit_var);
             // recursively call solve
-            return solve(simplified_cnf, env);
-
+            solve(simplified_cnf, env);
+            
         } else {
             // randomly take one literal from the smallest clause and set to true 
             Literal random_var = smallest_clause.chooseLiteral();
@@ -80,7 +76,7 @@ public class SATSolver {
             if (positive_env != null) {
                 positive_env.putTrue(random_var.getVariable());
                 return positive_env;
-            }
+            } 
             // negative literal
             Literal negated_random_var = random_var.getNegation();
             ImList<Clause> negative_cnf = substitute(clauses, negated_random_var);
@@ -91,9 +87,10 @@ public class SATSolver {
                 negative_env.putFalse(random_var.getVariable());
                 return negative_env;
             }
-            return null;
 
         }
+        return null;
+
     }
 
     /**
@@ -109,17 +106,15 @@ public class SATSolver {
     private static ImList<Clause> substitute(ImList<Clause> clauses,
             Literal l) {
         // throw new RuntimeException("not yet implemented.");
-         ImList<Clause> new_clauses = new Formula().getClauses();
+        // ImList<Clause> new_clauses = new Formula().getClauses();
 
         for (Clause clause : clauses){
             // remove l from clause
             if (clause.contains(l)){
-                if (clause.reduce(l)!= null) {
-                    new_clauses.add(clause.reduce(l));
-//                clause = clause.reduce(l);
-                }
+                // new_clauses.add(clause.reduce(l));
+                clause = clause.reduce(l);
             }
         }
-        return new_clauses;
+        return clauses;
     }
 }

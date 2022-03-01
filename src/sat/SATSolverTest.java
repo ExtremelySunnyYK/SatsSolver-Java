@@ -21,25 +21,30 @@ public class SATSolverTest {
     Literal nc = c.getNegation();
 
     public static void main(String[] args) {
-        Formula f2 = SatReader.formulaReader();
-        System.out.println("SAT solver starts!");
-        long started = System.nanoTime();
+        // Formula f2 = new Formula();
+        // Formula f2 = SatReader.formulaReader();
+        // System.out.println("SAT solver starts!");
+        // long started = System.nanoTime();
 
-        // Solve for satisfiability
-        Environment e = SATSolver.solve(f2);
-        if (e == null) {
-            System.out.println("unsatisfiable");
-        } else {
-            System.out.println("satisfiable");
-        }
+        // // Solve for satisfiability
+        // Environment e = SATSolver.solve(f2);
 
-        // Stop timer
-        long time = System.nanoTime();
-        long timeTaken = time - started;
-        System.out.println("Time:" + timeTaken / 1000000.0 + "ms");
+        // System.out.println(e);
 
-        // Write env to BoolAssignment.txt
-        if (e!=null) { SatWriter.writer(e); }
+        // if (e == null) {
+        //     System.out.println("unsatisfiable");
+        // } else {
+        //     System.out.println("satisfiable");
+        // }
+
+        // // Stop timer
+        // long time = System.nanoTime();
+        // long timeTaken = time - started;
+        // System.out.println("Time:" + timeTaken / 1000000.0 + "ms");
+
+        // // Write env to BoolAssignment.txt
+        // if (e!=null) { SatWriter.writer(e); }
+
     }
 
 
@@ -47,21 +52,19 @@ public class SATSolverTest {
     public void testSATSolver1(){
     	// (a v b)
     	Environment e = SATSolver.solve(makeFm(makeCl(a,b))	);
-/*
-    	assertTrue( "one of the literals should be set to true",
+        System.out.println(e);
+    	assert (
     			Bool.TRUE == e.get(a.getVariable())  
     			|| Bool.TRUE == e.get(b.getVariable())	);
     	
-*/    	
     }
     
     
     public void testSATSolver2(){
     	// (~a)
     	Environment e = SATSolver.solve(makeFm(makeCl(na)));
-/*
-    	assertEquals( Bool.FALSE, e.get(na.getVariable()));
-*/    	
+    	// assertEquals( Bool.FALSE, e.get(na.getVariable()));
+ 	
     }
     
     public static Formula makeFm(Clause... e) {

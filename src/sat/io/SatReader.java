@@ -10,8 +10,14 @@ import static sat.SATSolverTest.makeFm;
 
 public class SatReader {
 
+    public static void main(String[] args) {
+        formulaReader();
+        
+    }
+
 
     public static Formula formulaReader() {
+        // TODO : read from command line arguments
         Formula output = new Formula();
 
         BufferedReader br = null;
@@ -24,17 +30,14 @@ public class SatReader {
 
             while ((multiLine = br.readLine()) != null) {
                 for (String contentLine : multiLine.split(" 0")) {
+                    
                     contentLine = contentLine.trim();
 
                     if (contentLine.equals("")) { continue; }
 
                     if (contentLine.charAt(0) == 'c') { continue; }
 
-                    if (contentLine.charAt(0) == 'p') {
-                        // String[] line = contentLine.split("\\s+");
-                        // numClauses = Integer.parseInt(line[line.length - 1]);
-                        continue;
-                    }
+                    if (contentLine.charAt(0) == 'p') { continue; }
                     Literal[] literalArray = checkList(contentLine);
                     Clause clauses = makeCl(literalArray);
                     output = makeFm(clauses);

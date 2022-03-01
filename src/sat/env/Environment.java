@@ -68,6 +68,10 @@ public class Environment {
         else return b;
     }
 
+    public boolean isEmpty() {
+        return bindings.isEmpty();
+    }
+
     @Override
     public String toString () {
         return "Environment:" + bindings;
