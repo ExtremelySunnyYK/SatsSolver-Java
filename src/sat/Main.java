@@ -4,7 +4,7 @@ class Main{
 
     public static void main(String[] args){
         SATSolverTest solver = new SATSolverTest();
-//        solver.testSATSolver1();
-        solver.testSATSolver2();
+        solver.testSATSolver1();
+//        solver.testSATSolver2();
     }
 }

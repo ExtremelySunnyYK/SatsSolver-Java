@@ -27,7 +27,7 @@ public class SatWriter {
             output = output.substring(13, output.length() - 1);
             output = output.replaceAll("->", ":");
             output = output.replaceAll(", ", "\n");
-            System.out.println(output);
+//            System.out.println(output);
 
             printWriter.println(output);
         }

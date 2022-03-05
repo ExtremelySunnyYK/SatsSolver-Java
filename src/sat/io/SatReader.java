@@ -10,13 +10,7 @@ import static sat.SATSolverTest.makeFm;
 
 public class SatReader {
 
-    public static void main(String[] args) {
-        formulaReader();
-        
-    }
-
-
-    public static Formula formulaReader() {
+    public static Formula formulaReader(String filePath) {
         // TODO : read from command line arguments
         Formula output = new Formula();
 
@@ -24,7 +18,7 @@ public class SatReader {
 
         try {
             // File f = new File(root, filePath);
-            br = new BufferedReader(new FileReader(FilePath.FILE_IN));
+            br = new BufferedReader(new FileReader(filePath));
 
             String multiLine = "";
 
@@ -39,8 +33,8 @@ public class SatReader {
 
                     if (contentLine.charAt(0) == 'p') { continue; }
                     Literal[] literalArray = checkList(contentLine);
-                    Clause clauses = makeCl(literalArray);
-                    output = makeFm(clauses);
+                    Clause clause = makeCl(literalArray);
+                    output = output.addClause(clause);
                 }
             }
 

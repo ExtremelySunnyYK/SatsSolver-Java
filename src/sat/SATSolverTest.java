@@ -7,11 +7,13 @@ import org.junit.Test;
 
 import sat.env.*;
 import sat.formula.*;
+import sat.io.FilePath;
 import sat.io.SatReader;
 import sat.io.SatWriter;
 
 
 public class SATSolverTest {
+    private static String filepath;
     Literal a = PosLiteral.make("a");
     Literal b = PosLiteral.make("b");
     Literal c = PosLiteral.make("c");
@@ -20,29 +22,36 @@ public class SATSolverTest {
     Literal nc = c.getNegation();
 
     public static void main(String[] args) {
-        // Formula f2 = new Formula();
-        // Formula f2 = SatReader.formulaReader();
-        // System.out.println("SAT solver starts!");
-        // long started = System.nanoTime();
+//         Formula f2 = new Formula();
+        // pass in the file path as argument
+         String filepath = FilePath.FILE_IN_USAT;
+         if (args.length != 0) {
+             filepath = args[0];
+         }
+         Formula f2 = SatReader.formulaReader(filepath);
+         System.out.println("Formula");
+         System.out.println(f2);
+         System.out.println("SAT solver starts!");
+         long started = System.nanoTime();
 
-        // // Solve for satisfiability
-        // Environment e = SATSolver.solve(f2);
+         // Solve for satisfiability
+         Environment e = SATSolver.solve(f2);
 
-        // System.out.println(e);
+         System.out.println(e);
 
-        // if (e == null) {
-        //     System.out.println("unsatisfiable");
-        // } else {
-        //     System.out.println("satisfiable");
-        // }
+         if (e == null) {
+             System.out.println("unsatisfiable");
+         } else {
+             System.out.println("satisfiable");
+         }
 
-        // // Stop timer
-        // long time = System.nanoTime();
-        // long timeTaken = time - started;
-        // System.out.println("Time:" + timeTaken / 1000000.0 + "ms");
+         // Stop timer
+         long time = System.nanoTime();
+         long timeTaken = time - started;
+         System.out.println("Time:" + timeTaken / 1000000.0 + "ms");
 
-        // // Write env to BoolAssignment.txt
-        // if (e!=null) { SatWriter.writer(e); }
+         // Write env to BoolAssignment.txt
+         if (e!=null) { SatWriter.writer(e); }
 
     }
 
@@ -51,19 +60,18 @@ public class SATSolverTest {
     public void testSATSolver1(){
     	// (a v b)
     	Environment e = SATSolver.solve(makeFm(makeCl(a,b))	);
-        System.out.println(e);
         assertTrue ("checking if a or b is true",
     			Bool.TRUE == e.get(a.getVariable())  
     			|| Bool.TRUE == e.get(b.getVariable())	);
     	
     }
-    
-    
+
+
     public void testSATSolver2(){
     	// (~a)
+        System.out.println("testing...");
     	Environment e = SATSolver.solve(makeFm(makeCl(na)));
         System.out.println(e);
-
         assertEquals("checking if ", Bool.FALSE, e.get(na.getVariable()));
  	
     }
