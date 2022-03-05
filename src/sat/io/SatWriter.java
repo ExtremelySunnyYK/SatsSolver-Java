@@ -12,8 +12,6 @@ public class SatWriter {
     public static void writer(Environment env) {
 
         try {
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
-
         FileWriter fileWriter = new FileWriter(FilePath.FILE_OUT);
         PrintWriter printWriter = new PrintWriter(fileWriter);
 

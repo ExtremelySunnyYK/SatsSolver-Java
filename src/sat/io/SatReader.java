@@ -11,9 +11,7 @@ import static sat.SATSolverTest.makeFm;
 public class SatReader {
 
     public static Formula formulaReader(String filePath) {
-        // TODO : read from command line arguments
         Formula output = new Formula();
-
         BufferedReader br = null;
 
         try {
@@ -29,9 +27,9 @@ public class SatReader {
 
                     if (contentLine.equals("")) { continue; }
 
-                    if (contentLine.charAt(0) == 'c') { continue; }
+                    else if (contentLine.charAt(0) == 'c') { continue; }
 
-                    if (contentLine.charAt(0) == 'p') { continue; }
+                    else if (contentLine.charAt(0) == 'p') { continue; }
                     Literal[] literalArray = checkList(contentLine);
                     Clause clause = makeCl(literalArray);
                     output = output.addClause(clause);
