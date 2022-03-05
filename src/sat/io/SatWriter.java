@@ -22,12 +22,10 @@ public class SatWriter {
         } else {
             System.out.println("satisfiable");
             String output = env.toString();
-            // env --> Environment:[a->TRUE, b->FALSE, c->TRUE, d->FALSE]
 
             output = output.substring(13, output.length() - 1);
             output = output.replaceAll("->", ":");
             output = output.replaceAll(", ", "\n");
-//            System.out.println(output);
 
             printWriter.println(output);
         }
@@ -51,7 +49,6 @@ public class SatWriter {
         env = env.putTrue(c);
         env = env.putFalse(d);
 
-        System.out.println(env.toString());
         writer(env);
     }
 }

@@ -110,20 +110,15 @@ public class SATSolver {
      */
     private static ImList<Clause> substitute(ImList<Clause> clauses,
                                              Literal l) {
-        ImList<Clause> new_clauses = new EmptyImList<Clause>();
-
         for (Clause clause : clauses) {
-            // remove l from clause
-            if (clause.contains(l) || clause.contains(l.getNegation())) {
-                Clause reducedClause = clause.reduce(l); // would reduce return us empty clause?
-                if (reducedClause != null) {
-                    new_clauses = new_clauses.add(reducedClause);
-                }
-//                clause = clause.reduce(l);
-            } else {
-                new_clauses = new_clauses.add(clause);
+            if (clause.contains(l)) {
+                clauses = clauses.remove(clause);
+            }
+            else if (clause.contains(l.getNegation())) {
+                clauses = clauses.remove(clause);
+                clauses = clauses.add(clause.reduce(l));
             }
         }
-        return new_clauses;
+        return clauses;
     }
 }

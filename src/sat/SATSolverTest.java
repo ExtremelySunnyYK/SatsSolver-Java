@@ -59,7 +59,6 @@ public class SATSolverTest {
         assertTrue ("checking if a or b is true",
     			Bool.TRUE == e.get(a.getVariable())  
     			|| Bool.TRUE == e.get(b.getVariable())	);
-    	
     }
 
 
