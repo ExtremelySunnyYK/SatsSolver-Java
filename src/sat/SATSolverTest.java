@@ -29,15 +29,11 @@ public class SATSolverTest {
              filepath = args[0];
          }
          Formula f2 = SatReader.formulaReader(filepath);
-         System.out.println("Formula");
-         System.out.println(f2);
          System.out.println("SAT solver starts!");
          long started = System.nanoTime();
 
          // Solve for satisfiability
          Environment e = SATSolver.solve(f2);
-
-         System.out.println(e);
 
          if (e == null) {
              System.out.println("unsatisfiable");

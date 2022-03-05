@@ -21,15 +21,11 @@ public class SATSolver {
      */
     public static Environment solve(Formula formula) {
         Environment env = new Environment();
-
         if (formula.getSize() == 0) {
             return env;
         }
-//        System.out.println(formula.getClauses());
-//        System.out.println("FORMULA>GETCLAUUSES");
-        env = solve(formula.getClauses(), env);
 
-        return env;
+        return solve(formula.getClauses(), env);
     }
 
     /**
@@ -56,29 +52,32 @@ public class SATSolver {
             }
         }
 
+        Literal unit_lit = smallest_clause.chooseLiteral();
+
         if (smallest_clause.isUnit()) {
-            Literal unit_var = smallest_clause.chooseLiteral();
             // if its 1 literal only : bind it to env and its truthy value
-            env = checkLiteral(unit_var,env);
+            env = checkLiteral(unit_lit,env);
             // call substitute on this literal and get new simplified cnf
-            ImList<Clause> simplified_cnf = substitute(clauses, unit_var);
+            ImList<Clause> simplified_cnf = substitute(clauses, unit_lit);
             // recursively call solve
             return solve(simplified_cnf, env);
 
         } else {
-            // randomly take one literal from the smallest clause and set to true 
-            Literal random_lit = smallest_clause.chooseLiteral();
 
+            if (!(unit_lit instanceof PosLiteral)) {
+                unit_lit = unit_lit.getNegation();
+            }
             // positive literal
-            ImList<Clause> positive_cnf = substitute(clauses, random_lit);
+            ImList<Clause> positive_cnf = substitute(clauses, unit_lit);
             Environment positive_env = solve(positive_cnf, env);
 
             if (positive_env != null) {
-                positive_env = checkLiteral(random_lit, positive_env);
+                positive_env = env.putTrue(unit_lit.getVariable());
                 return positive_env;
             }
-            // negative literal
-            Literal negated_random_lit = random_lit.getNegation();
+
+            env = env.putFalse(unit_lit.getVariable());
+            Literal negated_random_lit = unit_lit.getNegation();
             ImList<Clause> negative_cnf = substitute(clauses, negated_random_lit);
 
             Environment negative_env = solve(negative_cnf, env);
