@@ -24,7 +24,7 @@ public class SATSolverTest {
     public static void main(String[] args) {
 //         Formula f2 = new Formula();
         // pass in the file path as argument
-         String filepath = FilePath.FILE_IN_USAT;
+         String filepath = FilePath.FILE_IN_SMALL_SAT;
          if (args.length != 0) {
              filepath = args[0];
          }

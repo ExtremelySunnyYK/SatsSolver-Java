@@ -2,6 +2,7 @@ package sat;
 
 import immutable.EmptyImList;
 import immutable.ImList;
+import sat.env.Bool;
 import sat.env.Environment;
 import sat.env.Variable;
 import sat.formula.*;
@@ -56,13 +57,13 @@ public class SATSolver {
 
         if (smallest_clause.isUnit()) {
             // if its 1 literal only : bind it to env and its truthy value
-            env = checkLiteral(unit_lit,env);
+            env = env.put(unit_lit.getVariable(),checkPos(unit_lit));
             // call substitute on this literal and get new simplified cnf
             ImList<Clause> simplified_cnf = substitute(clauses, unit_lit);
             // recursively call solve
             return solve(simplified_cnf, env);
 
-        } else {
+        } else { // there are no more unit literals
 
             if (!(unit_lit instanceof PosLiteral)) {
                 unit_lit = unit_lit.getNegation();
@@ -72,10 +73,11 @@ public class SATSolver {
             Environment positive_env = solve(positive_cnf, env);
 
             if (positive_env != null) {
-                positive_env = env.putTrue(unit_lit.getVariable());
+                positive_env = positive_env.putTrue(unit_lit.getVariable());
                 return positive_env;
             }
 
+            // if we cannot get a solution
             env = env.putFalse(unit_lit.getVariable());
             Literal negated_random_lit = unit_lit.getNegation();
             ImList<Clause> negative_cnf = substitute(clauses, negated_random_lit);
@@ -83,21 +85,11 @@ public class SATSolver {
             Environment negative_env = solve(negative_cnf, env);
 
             if (negative_env != null) {
-                negative_env = checkLiteral(negated_random_lit, negative_env);
+                negative_env = negative_env.putFalse(negated_random_lit.getVariable());
                 return negative_env;
             }
         }
         return null;
-    }
-
-    private static Environment checkLiteral(Literal random_lit, Environment env) {
-        Variable random_var = random_lit.getVariable();
-        if (random_lit instanceof PosLiteral) {
-            env = env.putTrue(random_var);
-        } else {
-            env = env.putFalse(random_var);
-        }
-        return env;
     }
 
     /**
@@ -120,5 +112,14 @@ public class SATSolver {
             }
         }
         return clauses;
+    }
+
+    private static Bool checkPos(Literal literal) {
+        if (literal instanceof PosLiteral) {
+            return Bool.TRUE;
+        }
+        else {
+            return Bool.FALSE;
+        }
     }
 }

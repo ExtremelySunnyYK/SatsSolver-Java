@@ -9,6 +9,6 @@ public class FilePath {
     public static String FILE_IN_USAT_TESTING = "sampleCNF/testing.cnf";
     public static String FILE_IN_SMALL_SAT = "sampleCNF/s8Sat.cnf";
     public static String FILE_IN_SMALL_USAT = "sampleCNF/s8Sat.cnf";
-    public static String FILE_OUT = "sampleCNF/BoolAssignment.txt";
+    public static String FILE_OUT = "./src/BoolAssignment.txt";
 
 }
